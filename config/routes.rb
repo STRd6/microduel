@@ -3,10 +3,10 @@ ActionController::Routing::Routes.draw do |map|
   map.logout "logout", :controller => "user_sessions", :action => "destroy"
 
   map.resources :user_sessions
-  map.resources :users
+  map.resources :users, :except => :destroy
+
+  map.resources :games, :except => [:edit, :update, :destroy],
+    :member => {:join => :post}
 
   map.root :users
-
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
 end

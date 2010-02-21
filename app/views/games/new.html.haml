@@ -1,0 +1,7 @@
+- form_for @game do |form|
+  = form.error_messages
+
+  = form.label :name
+  = form.text_field :name
+
+  = submit_tag "Create"

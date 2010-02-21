@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration
   def self.up
     create_table :users do |t|
-      t.string   "email",                              :null => false
+      t.string   "email"
       t.string   "crypted_password",                   :null => false
       t.string   "password_salt",                      :null => false
       t.string   "persistence_token",                  :null => false
@@ -14,9 +14,14 @@ class CreateUsers < ActiveRecord::Migration
       t.datetime "last_login_at"
       t.string   "current_login_ip"
       t.string   "last_login_ip"
+      t.string   "display_name"
       t.datetime "created_at",                         :null => false
       t.datetime "updated_at",                         :null => false
+      #t.string   "oauth_token"
+      #t.string   "oauth_secret"
     end
+
+    #add_index :users, :oauth_token
   end
 
   def self.down

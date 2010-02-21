@@ -1,0 +1,5 @@
+%p
+  = link_to "New", new_game_path
+
+%ul.games
+  = render :partial => Game.open.all

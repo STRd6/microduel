@@ -9,10 +9,61 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100218060015) do
+ActiveRecord::Schema.define(:version => 20100221044020) do
+
+  create_table "abilities", :force => true do |t|
+    t.string   "name",       :limit => 32, :null => false
+    t.integer  "star_cost",                :null => false
+    t.integer  "time_cost",                :null => false
+    t.text     "effect",                   :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  create_table "cards", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "game_cards", :force => true do |t|
+    t.integer  "player_id",                    :null => false
+    t.integer  "card_id",                      :null => false
+    t.integer  "position",                     :null => false
+    t.integer  "time_counters", :default => 0, :null => false
+    t.integer  "star_counters", :default => 0, :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "game_cards", ["player_id", "position"], :name => "index_game_cards_on_player_id_and_position", :unique => true
+
+  create_table "games", :force => true do |t|
+    t.string   "name",                                 :null => false
+    t.string   "state",                                :null => false
+    t.boolean  "public",             :default => true, :null => false
+    t.integer  "rotation_offset",    :default => 0,    :null => false
+    t.integer  "turn",               :default => 0,    :null => false
+    t.integer  "active_player_id"
+    t.integer  "priority_player_id"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+  end
+
+  add_index "games", ["public"], :name => "index_games_on_public"
+
+  create_table "players", :force => true do |t|
+    t.integer  "user_id",                    :null => false
+    t.integer  "game_id",                    :null => false
+    t.integer  "health",     :default => 50, :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  add_index "players", ["game_id"], :name => "index_players_on_game_id"
+  add_index "players", ["user_id"], :name => "index_players_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                              :null => false
+    t.string   "email"
     t.string   "crypted_password",                   :null => false
     t.string   "password_salt",                      :null => false
     t.string   "persistence_token",                  :null => false
@@ -25,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20100218060015) do
     t.datetime "last_login_at"
     t.string   "current_login_ip"
     t.string   "last_login_ip"
+    t.string   "display_name"
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
   end

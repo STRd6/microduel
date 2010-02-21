@@ -22,8 +22,14 @@ class GamesController < ResourceController::Base
   def join
     object.join(current_user)
     object.save!
-    
-    redirect_to object
+
+    if request.xhr?
+      render :update do |page|
+        page.redirect_to object
+      end
+    else
+      redirect_to object
+    end
   end
 
   def deploy

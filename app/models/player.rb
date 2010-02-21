@@ -5,4 +5,6 @@ class Player < ActiveRecord::Base
   has_many :game_cards, :order => :position
 
   validates_presence_of :user, :game
+
+  delegate :display_name, :to => :user
 end

@@ -7,6 +7,8 @@
     = stylesheet_link_tag 'main'
 
     %script{ :type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" }
+    - if protect_against_forgery?
+      = javascript_tag "window._auth_token = '#{form_authenticity_token}';"
     = javascript_include_tag 'application'
     = javascript_include_tag 'main'
 

@@ -6,4 +6,6 @@ class GameCard < ActiveRecord::Base
 
   validates_presence_of :card, :player, :position
   validates_numericality_of :position, :only_integer => true, :greater_than_or_equal_to => 0
+
+  delegate :name, :to => :card
 end

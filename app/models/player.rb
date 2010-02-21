@@ -7,4 +7,12 @@ class Player < ActiveRecord::Base
   validates_presence_of :user, :game
 
   delegate :display_name, :to => :user
+
+  before_validation_on_create :link_cards
+
+  def link_cards
+    game_cards.each do |card|
+      card.player = self
+    end
+  end
 end

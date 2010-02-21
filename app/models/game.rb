@@ -65,8 +65,10 @@ class Game < ActiveRecord::Base
 
   def join(user)
     unless players.map(&:user_id).include? user.id
-      players.build(:game => self, :user => user)
+      players.create(:game => self, :user => user, :game_cards => generate_default_game_cards)
     end
+
+    save!
   end
 
   def income
@@ -82,5 +84,11 @@ class Game < ActiveRecord::Base
     next_player_index = (turn + rotation_offset) % players.size
     self.active_player = players[next_player_index]
     self.priority_player = active_player
+  end
+
+  def generate_default_game_cards
+    (0...5).map do |position|
+      GameCard.new(:card => Card.test_card, :position => position)
+    end
   end
 end

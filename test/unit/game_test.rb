@@ -4,10 +4,12 @@ class GameTest < ActiveSupport::TestCase
   context "a game" do
     setup do
       @game = Factory :game
-      @game.players = [
-        Factory(:player, :game => @game),
-        Factory(:player, :game => @game),
-      ]
+      @game.join(Factory(:user))
+      @game.join(Factory(:user))
+    end
+
+    should "have five cards for each player" do
+      assert_equal 5, @game.players.first.game_cards.count
     end
 
     should "be able to start" do

@@ -29,5 +29,5 @@ Factory.define :user do |user|
 end
 
 Factory.define :card do |card|
-  
+  card.name "Test Card"
 end

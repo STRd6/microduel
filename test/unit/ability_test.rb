@@ -8,7 +8,7 @@ class AbilityTest < ActiveSupport::TestCase
       end
 
       should "have a bonus" do
-        assert @ability.bonus
+        assert @ability.bonus(0)
       end
     end
 
@@ -24,6 +24,26 @@ class AbilityTest < ActiveSupport::TestCase
       should "have a star cost" do
         assert @ability.star_cost
       end
+    end
+
+    context "with an ability effect" do
+      setup do
+        @ability = Factory :ability, :effect => Ability::Effect.new({:magic => "1*stars + 2*(stars/3)"})
+      end
+
+      should "give the correct calculation of bonus based on star powers" do
+        assert_equal 2, @ability.bonus(2)[:magic]
+        assert_equal 5, @ability.bonus(3)[:magic]
+      end
+    end
+  end
+
+  context "ability effect" do
+    should "give the correct calculation of star powers" do
+      effect = Ability::Effect.new({:magic => "1*stars + 2*(stars/3)"})
+
+      assert_equal 2, effect.derived_values(2)[:magic]
+      assert_equal 5, effect.derived_values(3)[:magic]
     end
   end
 end

@@ -6,7 +6,7 @@ Factory.define :ability do |ability|
   ability.name "Bonus Fire"
   ability.star_cost 1
   ability.time_cost 0
-  ability.effect ""
+  ability.effect Ability::Effect.new({})
 end
 
 Factory.define :game do |game|

@@ -30,7 +30,7 @@ class Game < ActiveRecord::Base
   end
 
   aasm_event :begin_game do
-    transitions :to => :pre_attack_phase, :from => [:open]
+    transitions :to => :allocate_time_phase, :from => [:open]
   end
 
   def start_game
@@ -65,7 +65,7 @@ class Game < ActiveRecord::Base
 
   def join(user)
     unless players.map(&:user_id).include? user.id
-      players.create(:game => self, :user => user, :game_cards => generate_default_game_cards)
+      players.build(:game => self, :user => user, :game_cards => generate_default_game_cards)
     end
 
     save!

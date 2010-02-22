@@ -12,20 +12,23 @@
 ActiveRecord::Schema.define(:version => 20100221205738) do
 
   create_table "abilities", :force => true do |t|
-    t.string   "name",       :limit => 32, :null => false
-    t.integer  "star_cost",                :null => false
-    t.integer  "time_cost",                :null => false
-    t.text     "effect",                   :null => false
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.string   "name",       :limit => 32,                :null => false
+    t.integer  "star_cost",                :default => 0, :null => false
+    t.integer  "time_cost",                :default => 0, :null => false
+    t.text     "effect",                                  :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
   end
 
   create_table "card_abilities", :force => true do |t|
-    t.integer  "card_id"
-    t.integer  "ability_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "card_id",    :null => false
+    t.integer  "ability_id", :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
+
+  add_index "card_abilities", ["ability_id"], :name => "index_card_abilities_on_ability_id"
+  add_index "card_abilities", ["card_id"], :name => "index_card_abilities_on_card_id"
 
   create_table "cards", :force => true do |t|
     t.string   "name",       :limit => 30, :null => false

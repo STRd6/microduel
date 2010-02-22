@@ -1,9 +1,13 @@
 %h2= @game.name
 
+%p.game_state= @game.state
+
 %ul.players
   - @game.players.each do |player|
     %li
       = player.display_name
+      == #{player.health}/#{player.health_max}
+
       %ul.cards
         - player.game_cards.each do |card|
           %li= render :partial => card

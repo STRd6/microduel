@@ -59,7 +59,7 @@ class GamesController < ResourceController::Base
       page.call "$('.gameState').html", object.state
       
       #TODO: Update players info only as needed
-      page.call :updateElements, object.players
+      # page.call :updateElements, object.players
     end
   end
 

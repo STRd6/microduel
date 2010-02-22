@@ -1,1 +1,5 @@
-= game_card.name
+%h4
+  = game_card.name
+  (#{game_card.star_counters})
+- game_card.bonus.each do |key, value|
+  %p +#{value} #{key}

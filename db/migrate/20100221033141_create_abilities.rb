@@ -2,8 +2,8 @@ class CreateAbilities < ActiveRecord::Migration
   def self.up
     create_table :abilities do |t|
       t.string :name, :null => false, :limit => 32
-      t.integer :star_cost, :null => false
-      t.integer :time_cost, :null => false
+      t.integer :star_cost, :null => false, :default => 0
+      t.integer :time_cost, :null => false, :default => 0
       t.text :effect, :null => false
 
       t.timestamps :null => false

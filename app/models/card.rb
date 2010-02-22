@@ -5,6 +5,14 @@ class Card < ActiveRecord::Base
   validates_presence_of :name
 
   def self.test_card
-    Card.find_or_create_by_name "Test"
+    ability = Ability.find_or_initialize_by_name("Mysticism")
+    ability.effect = Ability::Effect.new({:magic => "1*stars + 2*(stars/3)"})
+    ability.save!
+
+    card = Card.find_or_initialize_by_name("Mysticism")
+    card.abilities = [ability]
+    card.save!
+
+    card
   end
 end

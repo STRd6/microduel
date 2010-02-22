@@ -3,8 +3,8 @@ class GamesController < ResourceController::Base
 
   before_filter :require_user, :except => [:show, :index]
 
-  before_filter :ensure_priority, :except => [:new, :join, :create, :show, :index, :start]
-  before_filter :ensure_active, :except => [:new, :join, :create, :show, :index, :start]
+  #before_filter :ensure_priority, :except => [:new, :join, :create, :show, :index, :start]
+  #before_filter :ensure_active, :except => [:new, :join, :create, :show, :index, :start]
   before_filter :ensure_main_phase, :only => :deploy
   before_filter :ensure_attack_phase, :only => :attack
 
@@ -23,32 +23,7 @@ class GamesController < ResourceController::Base
     object.join(current_user)
     object.save!
 
-    if request.xhr?
-      render :update do |page|
-        page.redirect_to object
-      end
-    else
-      redirect_to object
-    end
-  end
-
-  def deploy
-    game_card = requesting_player.cards_in_hand.find(params[:card_id])
-    
-    requesting_player.deploy(game_card, params[:slot_type], params[:position])
-
-    render_to_game do |page|
-      page.call :updateElements, object.players
-      page.call :updateElements, [game_card]
-    end
-  end
-
-  def instant
-    game_card = requesting_player.cards_in_hand.find(params[:card_id])
-
-    requesting_player.play(game_card)
-
-    redirect_to object
+    smart_redirect(object)
   end
 
   def pass_priority
@@ -63,10 +38,17 @@ class GamesController < ResourceController::Base
     end
   end
 
+  def allocate
+    if game.allocate_stars_phase? || game.setup?
+
+    end
+    game.allocate(requesting_player, {0 => 1})
+  end
+
   def attack
-    params[:attack_declarations].each do |player_id, weapons|
+    params[:attack_declarations].each do |player_id, attacks|
       target_player = object.players.find(player_id)
-      attacking_cards = object.active_player.equipped_cards.find(weapons)
+      attacking_cards = object.active_player.game_cards.find(attacks)
 
       damage_array = attacking_cards.inject([]) do |array, card|
         array += card.attack
@@ -105,15 +87,13 @@ class GamesController < ResourceController::Base
 
   def ensure_priority
     unless is_priority_player?
-      flash[:error] = "You do not have priority!"
-      redirect_to object
+      smart_ensure("You do not have priority!")
     end
   end
 
   def ensure_active
     unless is_active_player?
-      flash[:error] = "You are not the active player!"
-      redirect_to object
+      smart_ensure("You are not the active player!")
     end
   end
 
@@ -125,8 +105,19 @@ class GamesController < ResourceController::Base
     object.active_player == requesting_player
   end
 
+  def smart_ensure(msg)
+    if request.xhr?
+      render :update do |page|
+        page.call "alert", msg
+      end
+    else
+      flash[:error] = msg
+      redirect_to object
+    end
+  end
+
   def render_to_game(&block)
-    render({:juggernaut => {:type => :send_to_channels, :channels => [object.channel]}}, {}, &block)
+    # render({:juggernaut => {:type => :send_to_channels, :channels => [object.channel]}}, {}, &block)
 
     if request.xhr?
       render :nothing => true

@@ -4,6 +4,8 @@ class CreatePlayers < ActiveRecord::Migration
       t.references :user, :null => false
       t.references :game, :null => false
       t.integer :health, :null => false, :default => 50
+      t.integer :star_counters, :null => false, :default => 3
+      t.integer :time_counters, :null => false, :default => 0
 
       t.timestamps :null => false
     end

@@ -14,7 +14,7 @@ class Game < ActiveRecord::Base
   aasm_column :state
 
   aasm_state :open, :exit => :start_game
-  aasm_state :allocate_stars_phase
+  aasm_state :allocate_stars_phase, :enter => :roll_stars
   aasm_state :allocate_time_phase
   aasm_state :pre_attack_phase
   aasm_state :attack_phase
@@ -59,8 +59,14 @@ class Game < ActiveRecord::Base
     save!
   end
 
-  def allocate(allocation)
-    
+  def roll_stars
+    transaction do
+      active_player.increment!(:star_counters, 1)
+      if (roll = rand(6)) < 5
+        # Allocate automatically
+        active_player.allocate_stars({roll => 1})
+      end
+    end
   end
 
   def join(user)
@@ -90,5 +96,10 @@ class Game < ActiveRecord::Base
     (0...5).map do |position|
       GameCard.new(:card => Card.test_card, :position => position)
     end
+  end
+
+  def message(text)
+    #TODO Persist
+    (@messages ||= []) << text
   end
 end

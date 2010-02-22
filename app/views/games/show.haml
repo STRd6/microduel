@@ -1,6 +1,9 @@
 %h2= @game.name
 
-%p.game_state= @game.state
+.span-4.game_state= @game.state
+
+.span-4.last= link_to "Pass Priority", {:action => :pass_priority}
+.clear
 
 %ul.players
   - @game.players.each do |player|

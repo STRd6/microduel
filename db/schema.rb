@@ -63,11 +63,13 @@ ActiveRecord::Schema.define(:version => 20100221205738) do
   add_index "games", ["public"], :name => "index_games_on_public"
 
   create_table "players", :force => true do |t|
-    t.integer  "user_id",                    :null => false
-    t.integer  "game_id",                    :null => false
-    t.integer  "health",     :default => 50, :null => false
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.integer  "user_id",                       :null => false
+    t.integer  "game_id",                       :null => false
+    t.integer  "health",        :default => 50, :null => false
+    t.integer  "star_counters", :default => 3,  :null => false
+    t.integer  "time_counters", :default => 0,  :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   add_index "players", ["game_id"], :name => "index_players_on_game_id"

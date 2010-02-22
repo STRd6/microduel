@@ -45,4 +45,14 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+
+  def smart_redirect(destination)
+    if request.xhr?
+      render :update do |page|
+        page.redirect_to destination
+      end
+    else
+      redirect_to destination
+    end
+  end
 end

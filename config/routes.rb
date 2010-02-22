@@ -6,7 +6,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :except => :destroy
 
   map.resources :games, :except => [:edit, :update, :destroy],
-    :member => {:join => :post}
+    :member => {
+      :join => :post,
+      :pass_priority => [:get, :post],
+    }
 
   map.root :users
 end

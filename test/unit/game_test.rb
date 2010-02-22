@@ -27,10 +27,6 @@ class GameTest < ActiveSupport::TestCase
         @game.begin_game
       end
 
-      should "be able to allocate time counters" do
-        @game.allocate 0 => @game.income
-      end
-
       should "be able to pass priority" do
         priority_player = @game.priority_player
         next_priority_player = (@game.players - [priority_player]).first

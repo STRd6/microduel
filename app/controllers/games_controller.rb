@@ -40,9 +40,10 @@ class GamesController < ResourceController::Base
 
   def allocate
     if game.allocate_stars_phase? || game.setup?
-
+      requesting_player.allocate_stars({0 => 1})
+    else
+      requesting_player.allocate_time({0 => 1})
     end
-    game.allocate(requesting_player, {0 => 1})
   end
 
   def attack
@@ -67,6 +68,11 @@ class GamesController < ResourceController::Base
   end
 
   private
+  def game
+    object
+  end
+  helper_method :game
+
   def requesting_player
     object.players.find_by_user_id(current_user.id) if current_user
   end

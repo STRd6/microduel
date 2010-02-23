@@ -9,6 +9,8 @@ ActionController::Routing::Routes.draw do |map|
     :member => {
       :join => :post,
       :pass_priority => [:get, :post],
+      :start => [:get, :post],
+      :allocate => [:post],
     }
 
   map.root :users

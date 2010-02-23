@@ -2,7 +2,9 @@
 
 .span-4.game_state= @game.state
 
-.span-4.last= link_to "Pass Priority", {:action => :pass_priority}
+.span-4.last
+  = link_to "Pass Priority", {:action => :pass_priority}
+  = link_to "Start", {:action => :start}
 .clear
 
 %ul.players
@@ -10,7 +12,20 @@
     %li
       = player.display_name
       == #{player.health}/#{player.health_max}
+      Stars: #{player.star_counters}
+      Time: #{player.time_counters}
 
       %ul.cards
         - player.game_cards.each do |card|
-          %li= render :partial => card
+          %li.card= render :partial => card
+
+:javascript
+  $(function() {
+    $(".card").click(function() {
+      var index = 0;
+
+      $.post("/games/1/allocate", {
+        
+      });
+    });
+  });

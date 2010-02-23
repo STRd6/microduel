@@ -15,7 +15,7 @@ class Game < ActiveRecord::Base
 
   aasm_state :open, :exit => :start_game
   aasm_state :allocate_stars_phase, :enter => :roll_stars
-  aasm_state :allocate_time_phase
+  aasm_state :allocate_time_phase, :enter => :add_time
   aasm_state :pre_attack_phase
   aasm_state :attack_phase
   aasm_state :end_of_turn_phase, :exit => :end_turn
@@ -30,7 +30,11 @@ class Game < ActiveRecord::Base
   end
 
   aasm_event :begin_game do
-    transitions :to => :allocate_time_phase, :from => [:open]
+    transitions :to => :setup, :from => [:open]
+  end
+
+  aasm_event :finish_setup do
+    transitions :to => :allocate_time_phase, :from => [:setup]
   end
 
   def start_game
@@ -69,6 +73,10 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def add_time
+    active_player.increment!(:time_counters, time_gain)
+  end
+
   def join(user)
     unless players.map(&:user_id).include? user.id
       players.build(:game => self, :user => user, :game_cards => generate_default_game_cards)
@@ -77,7 +85,7 @@ class Game < ActiveRecord::Base
     save!
   end
 
-  def income
+  def time_gain
     4
   end
 

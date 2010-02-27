@@ -30,10 +30,10 @@ class Player < ActiveRecord::Base
       allocations.each do |index, quantity|
         total += quantity
         card = game_cards.all[index]
-        card.increment!(:star_counters, quantity)
+        card.update_attributes!(:star_counters => card.star_counters + quantity)
       end
 
-      increment!(:star_counters, -total)
+      update_attributes!(:star_counters => star_counters - total)
     end
   end
 

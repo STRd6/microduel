@@ -40,10 +40,12 @@ class GamesController < ResourceController::Base
 
   def allocate
     if game.allocate_stars_phase? || game.setup?
-      requesting_player.allocate_stars({0 => 1})
-    else
-      requesting_player.allocate_time({0 => 1})
+      requesting_player.allocate_stars(allocation)
+    elsif game.allocate_time_phase?
+      requesting_player.allocate_time(allocation)
     end
+
+    render :nothing => true
   end
 
   def attack
@@ -129,6 +131,12 @@ class GamesController < ResourceController::Base
       render :nothing => true
     else
       redirect_to object
+    end
+  end
+
+  def allocation
+    params[:allocation].map do |key, value|
+      [key.to_i, value.to_i]
     end
   end
 end

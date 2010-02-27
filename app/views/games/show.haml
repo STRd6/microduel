@@ -22,10 +22,10 @@
 :javascript
   $(function() {
     $(".card").click(function() {
-      var index = 0;
+      var index = $(this).index();
+      var allocationData = {};
+      allocationData["allocation["+index+"]"] = 1;
 
-      $.post("/games/1/allocate", {
-        
-      });
+      $.post("/games/1/allocate", allocationData);
     });
   });

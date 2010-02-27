@@ -27,4 +27,8 @@ class GameCard < ActiveRecord::Base
 
     return bonus_amounts
   end
+
+  def attacks
+    abilities.map(&:attack).compact
+  end
 end

@@ -2,5 +2,9 @@
   = game_card.name
   (#{game_card.star_counters})
   [#{game_card.time_counters}]
+- game_card.attacks.each do |attack|
+  %p
+    = attack.damage
+    = attack.types.join " "
 - game_card.bonus.each do |key, value|
   %p +#{value} #{key}

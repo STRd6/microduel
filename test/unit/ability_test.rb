@@ -46,4 +46,13 @@ class AbilityTest < ActiveSupport::TestCase
       assert_equal 5, effect.derived_values(3)[:magic]
     end
   end
+
+  context "ability attack" do
+    should "give the correct damage" do
+      attack = Ability::Attack.new("2*stars", :acid)
+
+      assert_equal 4, attack.derived_damage(2)
+      assert_equal [:acid], attack.types
+    end
+  end
 end

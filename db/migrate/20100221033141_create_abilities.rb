@@ -4,7 +4,8 @@ class CreateAbilities < ActiveRecord::Migration
       t.string :name, :null => false, :limit => 32
       t.integer :star_cost, :null => false, :default => 0
       t.integer :time_cost, :null => false, :default => 0
-      t.text :effect, :null => false
+      t.text :effect
+      t.text :attack
 
       t.timestamps :null => false
     end

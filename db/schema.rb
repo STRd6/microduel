@@ -15,7 +15,8 @@ ActiveRecord::Schema.define(:version => 20100221205738) do
     t.string   "name",       :limit => 32,                :null => false
     t.integer  "star_cost",                :default => 0, :null => false
     t.integer  "time_cost",                :default => 0, :null => false
-    t.text     "effect",                                  :null => false
+    t.text     "effect"
+    t.text     "attack"
     t.datetime "created_at",                              :null => false
     t.datetime "updated_at",                              :null => false
   end

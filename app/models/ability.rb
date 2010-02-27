@@ -18,9 +18,23 @@ class Ability < ActiveRecord::Base
     end
   end
 
+  class Attack
+    attr_accessor :damage, :types
+
+    def initialize(damage, *types)
+      @damage, @types = damage, types
+    end
+
+    def derived_damage(stars)
+      # TODO: This is seriously dangerous
+      eval(damage)
+    end
+  end
+
   serialize :effect
+  serialize :attack
 
   def bonus(stars)
-    effect.derived_values(stars)
+    effect.derived_values(stars) if effect
   end
 end

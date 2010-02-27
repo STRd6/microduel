@@ -14,6 +14,7 @@ class Game < ActiveRecord::Base
   aasm_column :state
 
   aasm_state :open, :exit => :start_game
+  aasm_state :setup
   aasm_state :allocate_stars_phase, :enter => :roll_stars
   aasm_state :allocate_time_phase, :enter => :add_time
   aasm_state :pre_attack_phase

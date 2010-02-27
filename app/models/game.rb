@@ -23,6 +23,7 @@ class Game < ActiveRecord::Base
   aasm_state :completed
 
   aasm_event :end_phase do
+    transitions :to => :allocate_time_phase, :from => [:setup]
     transitions :to => :allocate_stars_phase, :from => [:end_of_turn_phase]
     transitions :to => :allocate_time_phase, :from => [:allocate_stars_phase]
     transitions :to => :pre_attack_phase, :from => [:allocate_time_phase]

@@ -29,6 +29,21 @@ class GameCard < ActiveRecord::Base
   end
 
   def attacks
-    abilities.map(&:attack).compact
+    abilities.map(&:attack)
+  end
+
+  def do_attack(index)
+    ability = abilities.all[index]
+
+    transaction do
+      damage = ability.attack_damage(star_counters)
+
+      update_attributes!(
+        :time_counters => time_counters - ability.time_cost,
+        :star_counters => star_counters - ability.star_cost
+      )
+
+      return damage
+    end
   end
 end

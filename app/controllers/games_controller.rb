@@ -49,19 +49,18 @@ class GamesController < ResourceController::Base
   end
 
   def attack
-    params[:attack_declarations].each do |player_id, attacks|
-      target_player = object.players.find(player_id)
-      attacking_cards = object.active_player.game_cards.find(attacks)
+    attack_declarations.each do |game_card_index, attack_index, player_id|
+      target_player = game.players.find(player_id)
 
-      damage_array = attacking_cards.inject([]) do |array, card|
-        array += card.attack
-      end
+      card = active_player.game_cards.all[game_card_index]
 
-      target_player.receive_damage(damage_array)
+      damage = card.do_attack(attack_index)
+
+      target_player.receive_damage(damage)
     end
 
     render_to_game do |page|
-      page.call :updateElements, object.players
+      page.call :updateElements, game.players
     end
   end
 
@@ -75,21 +74,23 @@ class GamesController < ResourceController::Base
   end
   helper_method :game
 
+  def active_player
+    game.active_player
+  end
+
   def requesting_player
     object.players.find_by_user_id(current_user.id) if current_user
   end
 
   def ensure_main_phase
     unless object.first_main_phase? || object.second_main_phase?
-      flash[:error] = "Not in main phase!"
-      redirect_to object
+      smart_ensure("Not in main phase!")
     end
   end
 
   def ensure_attack_phase
     unless object.attack_phase?
-      flash[:error] = "Not in attack phase!"
-      redirect_to object
+      smart_ensure("Not in attack phase!")
     end
   end
 
@@ -110,7 +111,7 @@ class GamesController < ResourceController::Base
   end
 
   def is_active_player?
-    object.active_player == requesting_player
+    active_player == requesting_player
   end
 
   def smart_ensure(msg)
@@ -137,6 +138,16 @@ class GamesController < ResourceController::Base
   def allocation
     params[:allocation].map do |key, value|
       [key.to_i, value.to_i]
+    end
+  end
+
+  def attack_declarations
+    params[:attack_declarations].map do |index, player_id|
+      card_attack_index = index.split(",").map(&:to_i)
+      card_index = card_attack_index[0]
+      attack_index = card_attack_index[1]
+
+      [card_index, attack_index, player_id.to_i]
     end
   end
 end

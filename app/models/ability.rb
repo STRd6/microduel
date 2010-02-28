@@ -35,6 +35,10 @@ class Ability < ActiveRecord::Base
   serialize :attack
 
   def bonus(stars)
-    effect.derived_values(stars) if effect
+    effect.derived_values(stars)
+  end
+
+  def attack_damage(stars)
+    attack.derived_damage(stars)
   end
 end

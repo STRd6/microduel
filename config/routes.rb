@@ -5,12 +5,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :user_sessions
   map.resources :users, :except => :destroy
 
+  #TODO Clean up member dealies
   map.resources :games, :except => [:edit, :update, :destroy],
     :member => {
       :join => :post,
       :pass_priority => [:get, :post],
       :start => [:get, :post],
       :allocate => [:post],
+      :attack => [:get, :post],
     }
 
   map.root :users

@@ -38,7 +38,11 @@ class Ability < ActiveRecord::Base
     effect.derived_values(stars)
   end
 
-  def attack_damage(stars)
-    attack.derived_damage(stars)
+  def attack_damage(stars, bonuses)
+    base_damage = attack.derived_damage(stars)
+
+    attack.types.inject(base_damage) do |net_damage, type|
+      net_damage + bonuses[type]
+    end
   end
 end

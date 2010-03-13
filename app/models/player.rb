@@ -23,8 +23,10 @@ class Player < ActiveRecord::Base
     50
   end
 
-  def attack_at_damage(card_index, attack_index)
-    game_cards.find(card_index).attack_at_damage(attack_index)
+  def bonuses
+    game_cards.map(&:bonus).inject(Hash.new(0)) do |net_bonus, card_bonus|
+      net_bonus.merge!(card_bonus) { |key, net, card| net + card }
+    end
   end
 
   def allocate_stars(allocations)

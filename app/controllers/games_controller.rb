@@ -54,7 +54,7 @@ class GamesController < ResourceController::Base
 
       card = active_player.game_cards.all[game_card_index]
 
-      damage = card.do_attack(attack_index)
+      damage = card.do_attack(attack_index, active_player.bonuses)
 
       target_player.receive_damage(damage)
     end

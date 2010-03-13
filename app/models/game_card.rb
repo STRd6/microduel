@@ -32,11 +32,11 @@ class GameCard < ActiveRecord::Base
     abilities.map(&:attack)
   end
 
-  def do_attack(index)
+  def do_attack(index, bonuses)
     ability = abilities.all[index]
 
     transaction do
-      damage = ability.attack_damage(star_counters)
+      damage = ability.attack_damage(star_counters, bonuses)
 
       update_attributes!(
         :time_counters => time_counters - ability.time_cost,

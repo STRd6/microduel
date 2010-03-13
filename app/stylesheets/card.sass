@@ -1,6 +1,22 @@
+.cards
+  width: 720px
+
 .card
+  +inline_block
+  +rounded_corners(6px)
+
   border: 1px solid black
+  height: 150px
+  margin: 2px
   padding: 3px
+  position: relative
+  width: 125px
+
   &:hover
     border: 2px solid green
     padding: 2px
+
+  .stars
+    bottom: 5px
+    position: absolute
+    right: 5px

@@ -1,11 +1,16 @@
 %h4
   = game_card.name
-  [#{game_card.time_counters}]
+
+.time
+  - game_card.time_counters.times do
+    .icon.time
+
 - game_card.abilities.each do |ability|
   - if attack = ability.attack
     %div
       - ability.time_cost.times do
         .icon.time.subtract
+      \:
       = attack.damage
       = attack.types.join " "
 - game_card.bonus.each do |key, value|

@@ -12,8 +12,12 @@
     %li
       = player.display_name
       == #{player.health}/#{player.health_max}
-      Stars: #{player.star_counters}
-      Time: #{player.time_counters}
+      Stars:
+      - player.star_counters.times do
+        .icon.star.add
+      Time:
+      - player.time_counters.times do
+        .icon.time.add
 
       %ul.cards
         - player.game_cards.each do |card|

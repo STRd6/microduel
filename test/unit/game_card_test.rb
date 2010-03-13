@@ -14,6 +14,10 @@ class GameCardTest < ActiveSupport::TestCase
       assert @game_card.star_counters
     end
 
+    should "have star max" do
+      assert @game_card.star_max
+    end
+
     context "with an ability" do
       setup do
         ability = Factory(:ability,

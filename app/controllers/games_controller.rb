@@ -27,11 +27,11 @@ class GamesController < ResourceController::Base
   end
 
   def pass_priority
-    object.pass_priority
-    object.save!
+    game.pass_priority
+    game.save!
 
     render_to_game do |page|
-      page.call "$('.gameState').html", object.state
+      page.call "$('.gameState').html", game.state
       
       #TODO: Update players info only as needed
       # page.call :updateElements, object.players

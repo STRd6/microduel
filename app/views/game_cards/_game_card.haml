@@ -1,10 +1,18 @@
 %h4
   = game_card.name
-  (#{game_card.star_counters})
   [#{game_card.time_counters}]
-- game_card.attacks.compact.each do |attack|
-  %p
-    = attack.damage
-    = attack.types.join " "
+- game_card.abilities.each do |ability|
+  - if attack = ability.attack
+    %div
+      - ability.time_cost.times do
+        .icon.time.subtract
+      = attack.damage
+      = attack.types.join " "
 - game_card.bonus.each do |key, value|
-  %p +#{value} #{key}
+  %div +#{value} #{key}
+
+.stars
+  - (game_card.star_max - game_card.star_counters).times do
+    .icon.star.empty
+  - game_card.star_counters.times do
+    .icon.star

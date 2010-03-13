@@ -46,4 +46,8 @@ class GameCard < ActiveRecord::Base
       return damage
     end
   end
+
+  def star_max
+    3
+  end
 end

@@ -26,6 +26,7 @@ end
 
 Factory.define :user do |user|
     user.email {Factory.next(:email)}
+    user.password "test1234"
 end
 
 Factory.define :card do |card|

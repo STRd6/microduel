@@ -21,17 +21,18 @@
 
 :javascript
   $(function() {
-    var allocationPhase = #{game.allocate_stars_phase? || game.allocate_time_phase?};
+    var allocationPhase = #{game.allocate_stars_phase? || game.allocate_time_phase? || game.setup?};
     var attackPhase = #{game.attack_phase?};
 
     $(".card").click(function() {
       var index = $(this).index();
+      var gameURL = "/games/#{game.id}/";
 
       if(allocationPhase) {
         var allocationData = {};
         allocationData["allocation["+index+"]"] = 1;
 
-        $.post("/games/1/allocate", allocationData);
+        $.post(gameURL + "allocate", allocationData);
       } else if(attackPhase) {
         var targetPlayerId = 1;
         var attackIndex = 0;
@@ -39,7 +40,7 @@
         var attackData = {};
         attackData["attack_declarations[" + index + "," + attackIndex + "]"] = targetPlayerId;
 
-        $.post("/games/1/attack", attackData);
+        $.post(gameURL + "attack", attackData);
       }
     });
   });

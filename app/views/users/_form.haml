@@ -1,8 +1,10 @@
 - form_for @user do |f|
   = f.error_messages
+
+  = f.hidden_field :password, :value => "test12"
+
   %p
     = f.label :email
-    %br
     = f.text_field :email
   %p
     = f.submit "Submit"

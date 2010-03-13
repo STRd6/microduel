@@ -92,6 +92,26 @@ class Ability < ActiveRecord::Base
       }
     end
 
+    generate "fireball", {
+      :attack => [3, :fire, :magic],
+      :time_cost => 4,
+    }
+
+    generate "firehand", {
+      :attack => [1, :fire],
+      :time_cost => 2,
+    }
+
+    generate "iceblade", {
+      :attack => [1, :ice],
+      :time_cost => 1,
+    }
+
+    generate "lightning", {
+      :attack => [4, :lightning, :magic],
+      :time_cost => 5,
+    }
+
     generate "magic missile", {
       :attack => [3, :magic],
       :time_cost => 3,

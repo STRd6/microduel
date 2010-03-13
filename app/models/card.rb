@@ -13,6 +13,29 @@ class Card < ActiveRecord::Base
   end
 
   def self.seed
+    generate "Chop",
+      "slash",
+      "slash gain"
+
+    generate "Fireball",
+      "fireball",
+      "fire gain"
+
+    generate "Firehand",
+      "firehand"
+
+    generate "Fury",
+      "slash",
+      "speed gain"
+
+    generate "Iceblade",
+      "ice boost",
+      "iceblade"
+
+    generate "Lightning",
+      "lightning",
+      "speed gain"
+
     generate "Magic Missile",
       "magic boost",
       "magic missile"
@@ -20,6 +43,13 @@ class Card < ActiveRecord::Base
     generate "Mysticism",
       "magic boost small",
       "magic gain"
+
+    generate "Slice",
+      "slash",
+      "slash boost"
+
+    generate "Swiftness",
+      "speed boost"
   end
 
   def self.random

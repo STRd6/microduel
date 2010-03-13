@@ -3,28 +3,26 @@ class Card < ActiveRecord::Base
   has_many :abilities, :through => :card_abilities
 
   validates_presence_of :name
+  
+  def self.generate(name, *abilities)
+    card = Card.find_by_name(name) || Card.new(:name => name)
+    
+    card.abilities = abilities.map {|ability_name| Ability.find_by_name(ability_name)}
+    
+    card.save!
+  end
 
-  def self.test_card
-    if rand(2) == 1
-      ability = Ability.find_or_initialize_by_name("Mysticism")
-      ability.effect = Ability::Effect.new({:magic => "1*stars + 2*(stars/3)"})
-      ability.save!
+  def self.seed
+    generate "Magic Missile",
+      "magic boost",
+      "magic missile"
 
-      card = Card.find_or_initialize_by_name("Mysticism")
-      card.abilities = [ability]
-      card.save!
-    else
-      ability = Ability.find_or_initialize_by_name("Magic Missile")
-      ability.time_cost = 3
-      ability.effect = Ability::Effect.new({:magic => "4*(stars/3)"})
-      ability.attack = Ability::Attack.new("3", :magic)
-      ability.save!
+    generate "Mysticism",
+      "magic boost small",
+      "magic gain"
+  end
 
-      card = Card.find_or_initialize_by_name("Magic Missile")
-      card.abilities = [ability]
-      card.save!
-    end
-
-      card
+  def self.random
+    first :order => "RANDOM()"
   end
 end

@@ -15,11 +15,10 @@ class GameCard < ActiveRecord::Base
 
   def bonus
     bonus_amounts = Hash.new(0)
-    #TODO Static bonus
 
     #Star bonus
     abilities.each do |ability|
-      ability_bonus = ability.bonus(star_counters)
+      ability_bonus = ability.bonus(star_counters, at_star_max)
       bonus_amounts.merge!(ability_bonus) {|key, old, new| old + new}
     end
 
@@ -45,6 +44,12 @@ class GameCard < ActiveRecord::Base
 
       return damage
     end
+  end
+
+  # Returns 1 if at star max, otherwise 0
+  # This is used to multiply into abilities that have a bonus at star max
+  def at_star_max
+    star_counters >= star_max ? 1 : 0
   end
 
   def star_max

@@ -104,7 +104,7 @@ class Game < ActiveRecord::Base
 
   def generate_default_game_cards
     (0...5).map do |position|
-      GameCard.new(:card => Card.test_card, :position => position)
+      GameCard.new(:card => Card.random, :position => position)
     end
   end
 

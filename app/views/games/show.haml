@@ -11,13 +11,14 @@
   - @game.players.each do |player|
     %li
       = player.display_name
-      == #{player.health}/#{player.health_max}
-      Stars:
-      - player.star_counters.times do
-        .icon.star.add
-      Time:
-      - player.time_counters.times do
-        .icon.time.add
+      .stats
+        .icon.health
+        == #{player.health}/#{player.health_max}
+      .allocatable
+        - player.star_counters.times do
+          .icon.star.add
+        - player.time_counters.times do
+          .icon.time.add
 
       %ul.cards
         - player.game_cards.each do |card|

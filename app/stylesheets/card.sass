@@ -1,6 +1,9 @@
 .cards
   width: 720px
 
+  ul&
+    margin: 0
+
 .card
   +inline_block
   +rounded_corners(6px)
@@ -15,6 +18,9 @@
   &:hover
     border: 2px solid green
     padding: 2px
+
+  h4
+    margin-bottom: 6px
 
   .stars
     bottom: 5px

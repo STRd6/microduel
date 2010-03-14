@@ -13,7 +13,7 @@ class Player < ActiveRecord::Base
 
   delegate :display_name, :to => :user
 
-  before_validation_on_create :link_cards, :prepare_temp_bonus
+  before_validation_on_create :link_cards, :clear_temp_bonus
 
   def link_cards
     game_cards.each do |card|
@@ -71,7 +71,11 @@ class Player < ActiveRecord::Base
     update_attributes!(:health => health - [damage, 0].max)
   end
 
-  def prepare_temp_bonus
-    self.temp_bonus ||= {}
+  def add_temp_bonus(bonus)
+    temp_bonus.merge!(bonus) { |key, temp, new| temp + new }
+  end
+
+  def clear_temp_bonus
+    self.temp_bonus = Hash.new(0)
   end
 end

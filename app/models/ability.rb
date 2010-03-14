@@ -38,7 +38,7 @@ class Ability < ActiveRecord::Base
   before_validation :prepare_effect
 
   def bonus(stars, at_star_max)
-    if effect
+    if effect && passive?
       effect.derived_values(stars, at_star_max)
     else
       Hash.new(0)
@@ -51,6 +51,14 @@ class Ability < ActiveRecord::Base
     attack.types.inject(base_damage) do |net_damage, type|
       net_damage + bonuses[type]
     end
+  end
+
+  def passive?
+    star_cost == 0 && time_cost == 0
+  end
+
+  def temp_bonus(stars, at_star_max)
+    effect.derived_values(stars, at_star_max)
   end
 
   def prepare_attack

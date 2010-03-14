@@ -18,10 +18,12 @@ class GameCardTest < ActiveSupport::TestCase
       assert @game_card.star_max
     end
 
-    context "with an ability" do
+    context "with a passive ability" do
       setup do
         ability = Factory(:ability,
-          :effect => Ability::Effect.new({:magic => "1*stars + 2*(stars/3)"})
+          :effect => Ability::Effect.new({:magic => "1*stars + 2*(stars/3)"}),
+          :star_cost => 0,
+          :time_cost => 0
         )
 
         @game_card = Factory :game_card,

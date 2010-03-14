@@ -4,6 +4,8 @@ class Player < ActiveRecord::Base
 
   has_many :game_cards, :order => :position
 
+  serialize :temp_bonus
+
   validates_presence_of :user, :game
   validates_numericality_of :health, :only_integer => true
   validates_numericality_of :star_counters, :only_integer => true, :greater_than_or_equal_to => 0
@@ -11,7 +13,7 @@ class Player < ActiveRecord::Base
 
   delegate :display_name, :to => :user
 
-  before_validation_on_create :link_cards
+  before_validation_on_create :link_cards, :prepare_temp_bonus
 
   def link_cards
     game_cards.each do |card|
@@ -28,9 +30,13 @@ class Player < ActiveRecord::Base
   end
 
   def bonuses
-    game_cards.map(&:bonus).inject(Hash.new(0)) do |net_bonus, card_bonus|
+    net_bonuses = Hash.new(0)
+
+    game_cards.map(&:bonus).inject(net_bonuses) do |net_bonus, card_bonus|
       net_bonus.merge!(card_bonus) { |key, net, card| net + card }
     end
+
+    net_bonuses.merge!(temp_bonus) { |key, net, temp| net + temp }
   end
 
   def allocate_stars(allocations)
@@ -63,5 +69,9 @@ class Player < ActiveRecord::Base
 
   def receive_damage(damage)
     update_attributes!(:health => health - [damage, 0].max)
+  end
+
+  def prepare_temp_bonus
+    self.temp_bonus ||= {}
   end
 end

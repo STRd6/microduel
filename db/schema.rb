@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20100314005232) do
     t.integer  "health",        :default => 50, :null => false
     t.integer  "star_counters", :default => 3,  :null => false
     t.integer  "time_counters", :default => 0,  :null => false
+    t.text     "temp_bonus",                    :null => false
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end

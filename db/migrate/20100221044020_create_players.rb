@@ -6,6 +6,7 @@ class CreatePlayers < ActiveRecord::Migration
       t.integer :health, :null => false, :default => 50
       t.integer :star_counters, :null => false, :default => 3
       t.integer :time_counters, :null => false, :default => 0
+      t.text :temp_bonus, :null => false
 
       t.timestamps :null => false
     end

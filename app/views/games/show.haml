@@ -28,6 +28,7 @@
   $(function() {
     var allocationPhase = #{game.allocate_stars_phase? || game.allocate_time_phase? || game.setup?};
     var attackPhase = #{game.attack_phase?};
+    var preAttackPhase = #{game.pre_attack_phase?};
 
     $(".card").click(function() {
       var index = $(this).index();
@@ -38,6 +39,15 @@
         allocationData["allocation["+index+"]"] = 1;
 
         $.post(gameURL + "allocate", allocationData);
+      } else if(preAttackPhase) {
+        var abilityIndex = $(this).find(".ability").index($(this).find(".ability.activatable"));
+
+        if(abilityIndex != -1) {
+          $.post(gameURL + "activate", {
+            ability_index: abilityIndex,
+            game_card_index: index
+          });
+        }
       } else if(attackPhase) {
         var targetPlayerId = 1;
         var attackIndex = $(this).find(".ability").index($(this).find(".ability.attack"));

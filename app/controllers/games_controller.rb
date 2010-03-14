@@ -3,27 +3,27 @@ class GamesController < ResourceController::Base
 
   before_filter :require_user, :except => [:show, :index]
 
-  #before_filter :ensure_priority, :except => [:new, :join, :create, :show, :index, :start]
-  #before_filter :ensure_active, :except => [:new, :join, :create, :show, :index, :start]
-  before_filter :ensure_main_phase, :only => :deploy
+  before_filter :ensure_priority, :except => [:new, :join, :create, :show, :index, :start]
+  before_filter :ensure_active, :except => [:new, :join, :create, :show, :index, :start]
   before_filter :ensure_attack_phase, :only => :attack
+  before_filter :ensure_pre_attack_phase, :only => :activate
 
   helper_method :is_priority_player?
 
   def start
-    object.begin_game
-    object.save!
+    game.begin_game
+    game.save!
 
     render_to_game do |page|
-      page.call "$('.gameState').html", object.state
+      page.call "$('.gameState').html", game.state
     end
   end
 
   def join
-    object.join(current_user)
-    object.save!
+    game.join(current_user)
+    game.save!
 
-    smart_redirect(object)
+    smart_redirect(game)
   end
 
   def pass_priority
@@ -35,6 +35,20 @@ class GamesController < ResourceController::Base
       
       #TODO: Update players info only as needed
       # page.call :updateElements, object.players
+    end
+  end
+
+  def activate
+    game_card_index = params[:game_card_index].to_i
+    ability_index = params[:ability_index].to_i
+
+    if game_card_index >= 0 && ability_index >= 0
+      card = priority_player.game_cards.all[game_card_index]
+
+      temp_bonus = card.do_activation(ability_index)
+
+      priority_player.add_temp_bonus(temp_bonus)
+      priority_player.save!
     end
   end
 
@@ -65,7 +79,7 @@ class GamesController < ResourceController::Base
   end
 
   create.before do
-    object.join(current_user)
+    game.join(current_user)
   end
 
   private
@@ -78,19 +92,29 @@ class GamesController < ResourceController::Base
     game.active_player
   end
 
+  def priority_player
+    game.priority_player
+  end
+
   def requesting_player
-    object.players.find_by_user_id(current_user.id) if current_user
+    game.players.find_by_user_id(current_user.id) if current_user
   end
 
   def ensure_main_phase
-    unless object.first_main_phase? || object.second_main_phase?
+    unless game.first_main_phase? || game.second_main_phase?
       smart_ensure("Not in main phase!")
     end
   end
 
   def ensure_attack_phase
-    unless object.attack_phase?
+    unless game.attack_phase?
       smart_ensure("Not in attack phase!")
+    end
+  end
+
+  def ensure_pre_attack_phase
+    unless game.pre_attack_phase?
+      smart_ensure("Not in pre attack phase!")
     end
   end
 
@@ -107,7 +131,7 @@ class GamesController < ResourceController::Base
   end
 
   def is_priority_player?
-    object.priority_player == requesting_player
+    priority_player == requesting_player
   end
 
   def is_active_player?
@@ -121,7 +145,7 @@ class GamesController < ResourceController::Base
       end
     else
       flash[:error] = msg
-      redirect_to object
+      redirect_to game
     end
   end
 
@@ -131,7 +155,7 @@ class GamesController < ResourceController::Base
     if request.xhr?
       render :nothing => true
     else
-      redirect_to object
+      redirect_to game
     end
   end
 

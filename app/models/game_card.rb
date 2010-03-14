@@ -31,16 +31,27 @@ class GameCard < ActiveRecord::Base
     abilities.map(&:attack)
   end
 
-  def do_attack(index, bonuses)
-    ability = abilities.all[index]
-
+  def do_activation(index)
     transaction do
+      ability = abilities.all[index]
+
+      if ability.passive?
+        return Hash.new(0)
+      else
+        pay_cost(ability)
+
+        return ability.temp_bonus(star_counters, at_star_max)
+      end
+    end
+  end
+
+  def do_attack(index, bonuses)
+    transaction do
+      ability = abilities.all[index]
+
       damage = ability.attack_damage(star_counters, bonuses)
 
-      update_attributes!(
-        :time_counters => time_counters - ability.time_cost,
-        :star_counters => star_counters - ability.star_cost
-      )
+      pay_cost(ability)
 
       return damage
     end
@@ -54,5 +65,13 @@ class GameCard < ActiveRecord::Base
 
   def star_max
     3
+  end
+
+  private
+  def pay_cost(ability)
+    update_attributes!(
+      :time_counters => time_counters - ability.time_cost,
+      :star_counters => star_counters - ability.star_cost
+    )
   end
 end

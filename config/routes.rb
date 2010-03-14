@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
       :join => :post,
       :pass_priority => [:get, :post],
       :start => [:get, :post],
+      :activate => [:post],
       :allocate => [:post],
       :attack => [:get, :post],
     }

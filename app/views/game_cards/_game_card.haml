@@ -14,7 +14,10 @@
       = attack.damage
       = attack.types.join " "
   - else
-    .ability
+    - if ability.passive?
+      .ability.passive
+    - else
+      .ability.activatable
 
 - game_card.bonus.each do |key, value|
   %div +#{value} #{key}

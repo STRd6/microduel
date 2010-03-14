@@ -61,11 +61,18 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   context "ability attack" do
-    should "give the correct damage" do
+    should "give the correct damage based on stars" do
       attack = Ability::Attack.new("2*stars", :acid)
 
       assert_equal 4, attack.derived_damage(2)
       assert_equal [:acid], attack.types
+    end
+
+    should "give the correct damage when a constant integer" do
+      attack = Ability::Attack.new(1, :water)
+
+      assert_equal 1, attack.derived_damage(2)
+      assert_equal [:water], attack.types
     end
   end
 end

@@ -11,7 +11,7 @@ class Ability < ActiveRecord::Base
 
       # TODO: This is seriously dangerous
       hash.each do |key, value|
-        h[key] = eval(value)
+        h[key] = eval(value.to_s)
       end
 
       h
@@ -27,7 +27,7 @@ class Ability < ActiveRecord::Base
 
     def derived_damage(stars)
       # TODO: This is seriously dangerous
-      eval(damage)
+      eval(damage.to_s)
     end
   end
 

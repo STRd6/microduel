@@ -23,6 +23,10 @@ class Player < ActiveRecord::Base
     50
   end
 
+  def speed
+    4
+  end
+
   def bonuses
     game_cards.map(&:bonus).inject(Hash.new(0)) do |net_bonus, card_bonus|
       net_bonus.merge!(card_bonus) { |key, net, card| net + card }

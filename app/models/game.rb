@@ -76,7 +76,7 @@ class Game < ActiveRecord::Base
   end
 
   def add_time
-    active_player.increment!(:time_counters, time_gain)
+    active_player.increment!(:time_counters, active_player.speed)
   end
 
   def join(user)
@@ -85,10 +85,6 @@ class Game < ActiveRecord::Base
     end
 
     save!
-  end
-
-  def time_gain
-    4
   end
 
   def channel

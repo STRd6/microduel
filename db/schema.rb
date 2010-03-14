@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100221205738) do
+ActiveRecord::Schema.define(:version => 20100314005232) do
 
   create_table "abilities", :force => true do |t|
     t.string   "name",       :limit => 32,                :null => false
@@ -36,6 +36,17 @@ ActiveRecord::Schema.define(:version => 20100221205738) do
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
   end
+
+  create_table "deck_lists", :force => true do |t|
+    t.string   "name",       :limit => 32, :null => false
+    t.integer  "user_id",                  :null => false
+    t.text     "card_data",                :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "deck_lists", ["name", "user_id"], :name => "index_deck_lists_on_name_and_user_id", :unique => true
+  add_index "deck_lists", ["user_id"], :name => "index_deck_lists_on_user_id"
 
   create_table "game_cards", :force => true do |t|
     t.integer  "player_id",                    :null => false

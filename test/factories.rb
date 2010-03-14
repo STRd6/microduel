@@ -2,6 +2,10 @@ Factory.sequence :email do |n|
   "test#{n}@example.com"
 end
 
+Factory.sequence :deck_name do |n|
+  "test#{n}"
+end
+
 Factory.define :ability do |ability|
   ability.name "Bonus Fire"
   ability.star_cost 1
@@ -25,10 +29,15 @@ Factory.define :game_card do |game_card|
 end
 
 Factory.define :user do |user|
-    user.email {Factory.next(:email)}
+    user.email { Factory.next(:email) }
     user.password "test1234"
 end
 
 Factory.define :card do |card|
   card.name "Test Card"
+end
+
+Factory.define :deck_list do |deck_list|
+  deck_list.name { Factory.next(:deck_name) }
+  deck_list.association :user
 end

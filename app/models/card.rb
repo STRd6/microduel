@@ -52,7 +52,7 @@ class Card < ActiveRecord::Base
       "speed boost"
   end
 
-  def self.random
-    first :order => "RANDOM()"
+  def self.random(limit=5)
+    all :order => "RANDOM()", :limit => limit
   end
 end

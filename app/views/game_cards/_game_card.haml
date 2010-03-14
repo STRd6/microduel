@@ -7,12 +7,15 @@
 
 - game_card.abilities.each do |ability|
   - if attack = ability.attack
-    %div
+    .ability.attack
       - ability.time_cost.times do
         .icon.time.subtract
       \:
       = attack.damage
       = attack.types.join " "
+  - else
+    .ability
+
 - game_card.bonus.each do |key, value|
   %div +#{value} #{key}
 

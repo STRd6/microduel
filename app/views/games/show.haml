@@ -40,7 +40,7 @@
         $.post(gameURL + "allocate", allocationData);
       } else if(attackPhase) {
         var targetPlayerId = 1;
-        var attackIndex = 0;
+        var attackIndex = $(this).find(".ability").index($(this).find(".ability.attack"));
 
         var attackData = {};
         attackData["attack_declarations[" + index + "," + attackIndex + "]"] = targetPlayerId;

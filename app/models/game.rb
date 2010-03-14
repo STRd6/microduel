@@ -49,9 +49,13 @@ class Game < ActiveRecord::Base
   end
 
   def end_turn
-    self.turn += 1
-    set_active_player
-    save!
+    transaction do
+      clear_temp_bonuses
+
+      self.turn += 1
+      set_active_player
+      save!
+    end
   end
 
   def pass_priority
@@ -101,6 +105,13 @@ class Game < ActiveRecord::Base
   def generate_default_game_cards
     Card.random.zip( Array(0..5) ).map do |card, position|
       GameCard.new(:card => card, :position => position)
+    end
+  end
+
+  def clear_temp_bonuses
+    players.each do |player|
+      player.clear_temp_bonus
+      player.save!
     end
   end
 

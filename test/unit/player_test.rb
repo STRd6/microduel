@@ -16,5 +16,19 @@ class PlayerTest < ActiveSupport::TestCase
         end
       end
     end
+
+    should "be able to add a temp bonus" do
+      assert_difference "@player.bonuses[:fire]", 3 do
+        @player.add_temp_bonus :fire => 3
+      end
+    end
+
+    should "be able to clear a temp bonus" do
+      @player.add_temp_bonus :fire => 3
+
+      assert_difference "@player.bonuses[:fire]", -3 do
+        @player.clear_temp_bonus
+      end
+    end
   end
 end

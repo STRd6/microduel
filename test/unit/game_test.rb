@@ -36,5 +36,23 @@ class GameTest < ActiveSupport::TestCase
         assert_equal next_priority_player, @game.priority_player
       end
     end
+
+    context "temp bonuses" do
+      setup do
+        @game.state = :end_of_turn_phase
+        @game.save!
+
+        @player = @game.players.first
+
+        @player.add_temp_bonus :fire => 3
+        @player.save!
+      end
+
+      should "be cleared at end of turn" do
+        assert_difference "@player.bonuses[:fire]", -3 do
+          @game.end_phase
+        end
+      end
+    end
   end
 end

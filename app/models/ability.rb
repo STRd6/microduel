@@ -92,6 +92,11 @@ class Ability < ActiveRecord::Base
       }
     end
 
+    generate "acid blast", {
+      :attack => ["2*stars", :acid],
+      :time_cost => 1,
+    }
+
     generate "fireball", {
       :attack => [3, :fire, :magic],
       :time_cost => 4,
@@ -104,6 +109,11 @@ class Ability < ActiveRecord::Base
 
     generate "iceblade", {
       :attack => [1, :ice],
+      :time_cost => 1,
+    }
+
+    generate "kick", {
+      :attack => ["2*stars", :smash],
       :time_cost => 1,
     }
 

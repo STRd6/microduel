@@ -13,6 +13,9 @@ class Card < ActiveRecord::Base
   end
 
   def self.seed
+    generate "Acid Blast",
+      "acid blast"
+
     generate "Chop",
       "slash",
       "slash gain"
@@ -31,6 +34,9 @@ class Card < ActiveRecord::Base
     generate "Iceblade",
       "ice boost",
       "iceblade"
+
+    generate "Kick",
+      "kick"
 
     generate "Lightning",
       "lightning",

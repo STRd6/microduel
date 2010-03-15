@@ -50,6 +50,10 @@ class GamesController < ResourceController::Base
       priority_player.add_temp_bonus(temp_bonus)
       priority_player.save!
     end
+
+    render_to_game do |page|
+      #TODO
+    end
   end
 
   def allocate
@@ -59,7 +63,9 @@ class GamesController < ResourceController::Base
       requesting_player.allocate_time(allocation)
     end
 
-    render :nothing => true
+    render_to_game do |page|
+      #TODO
+    end
   end
 
   def attack
@@ -99,6 +105,15 @@ class GamesController < ResourceController::Base
   def requesting_player
     game.players.find_by_user_id(current_user.id) if current_user
   end
+
+  def target_player
+    if game.players.size == 1
+      game.players.first
+    else
+      (game.players - [active_player]).first
+    end
+  end
+  helper_method :target_player
 
   def ensure_main_phase
     unless game.first_main_phase? || game.second_main_phase?

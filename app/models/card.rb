@@ -25,7 +25,8 @@ class Card < ActiveRecord::Base
       "fire gain"
 
     generate "Firehand",
-      "firehand"
+      "firehand",
+      "fire charge"
 
     generate "Fury",
       "slash",

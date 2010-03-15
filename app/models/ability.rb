@@ -86,15 +86,16 @@ class Ability < ActiveRecord::Base
       generate "#{type} boost", {
         :effect => {:"#{type}" => "4*at_star_max"}
       }
-    end
 
-    types.each do |type|
       generate "#{type} boost small", {
         :effect => {:"#{type}" => "2*at_star_max"}
       }
-    end
 
-    types.each do |type|
+      generate "#{type} charge", {
+        :effect => {:"#{type}" => "3"},
+        :star_cost => 1,
+      }
+
       generate "#{type} gain", {
         :effect => {:"#{type}" => "1*stars"}
       }

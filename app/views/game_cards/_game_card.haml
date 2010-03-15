@@ -18,6 +18,14 @@
       .ability.passive
     - else
       .ability.activatable
+        - ability.time_cost.times do
+          .icon.time.subtract
+        - ability.star_cost.times do
+          .icon.star.subtract
+        \:
+        - ability.effect.hash.each do |key, value|
+          = "+ #{value} #{key}"
+        until end of turn.
 
 - game_card.bonus.each do |key, value|
   %div +#{value} #{key}

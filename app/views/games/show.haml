@@ -14,6 +14,13 @@
       .stats
         .icon.health
         == #{player.health}/#{player.health_max}
+      .bonus
+        - player.temp_bonus.each do |key, value|
+          - next if value == 0
+          %p
+            = key
+            \:
+            = value
       .allocatable
         - player.star_counters.times do
           .icon.star.add
@@ -49,7 +56,7 @@
           });
         }
       } else if(attackPhase) {
-        var targetPlayerId = 1;
+        var targetPlayerId = #{target_player.id};
         var attackIndex = $(this).find(".ability").index($(this).find(".ability.attack"));
 
         var attackData = {};

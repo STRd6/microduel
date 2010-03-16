@@ -3,8 +3,10 @@
 .span-4.game_state= @game.state
 
 .span-4.last
-  = link_to "Pass Priority", {:action => :pass_priority}
-  = link_to "Start", {:action => :start}
+  %ul
+    %li= link_to "Pass Priority", {:action => :pass_priority}
+    - if game.open?
+      %li= link_to "Start", {:action => :start}
 .clear
 
 %ul.players

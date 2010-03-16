@@ -11,7 +11,7 @@
 
 %ul.players
   - @game.players.each do |player|
-    %li
+    %li.player
       = player.display_name
       .stats
         .icon.health

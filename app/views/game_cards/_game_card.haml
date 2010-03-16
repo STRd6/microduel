@@ -1,34 +1,41 @@
-%h4
+%h4.title
   = game_card.name
 
-.time
-  - game_card.time_counters.times do
-    .icon.time
+.graphic
 
-- game_card.abilities.each do |ability|
-  - if attack = ability.attack
-    .ability.attack
-      - ability.time_cost.times do
-        .icon.time.subtract
-      \:
-      = attack.damage
-      = attack.types.join " "
-  - else
-    - if ability.passive?
-      .ability.passive
+  .time
+    - game_card.time_counters.times do
+      .icon.time
+
+.text
+  - game_card.abilities.each do |ability|
+    - if attack = ability.attack
+      .ability.attack
+        .cost
+          - ability.time_cost.times do
+            .icon.time.subtract
+        \=>
+        .damage{:title => attack.damage}
+          = attack.derived_damage(game_card.star_counters)
+        .types
+          = attack.types.join " "
+        
     - else
-      .ability.activatable
-        - ability.time_cost.times do
-          .icon.time.subtract
-        - ability.star_cost.times do
-          .icon.star.subtract
-        \:
-        - ability.effect.hash.each do |key, value|
-          = "+ #{value} #{key}"
-        until end of turn.
+      - if ability.passive?
+        .ability.passive
+      - else
+        .ability.activatable
+          - ability.time_cost.times do
+            .icon.time.subtract
+          - ability.star_cost.times do
+            .icon.star.subtract
+          \:
+          - ability.effect.hash.each do |key, value|
+            = "+ #{value} #{key}"
+          until end of turn.
 
-- game_card.bonus.each do |key, value|
-  %div +#{value} #{key}
+  - game_card.bonus.each do |key, value|
+    .bonus +#{value} #{key}
 
 .stars
   - (game_card.star_max - game_card.star_counters).times do

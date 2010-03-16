@@ -21,20 +21,38 @@
 
   .text
     font-size: 16px
+    line-height: 20px
     margin: 6px
 
   .ability
     &.attack
-      .cost
-        display: inline
-      .damage
-        display: inline
+      line-height: 16px
+      .channel
+        +rounded_corners(8px)
+        border: 1px solid black
+        height: 18px
+        margin-bottom: 6px
+        padding: 2px
+        position: relative
+        .cost
+          position: absolute
+          top: 2px
+          right: 6px
+        .damage
+          /border: 1px solid black
+          height: 16px
+          position: absolute
+          text-align: center
+          top: 3px
+          left: 5px
+          width: 16px
 
   .graphic
     border: 1px solid black
     height: 80px
     margin: 6px
     margin-top: 0px
+    padding: 2px
     width: 136px
 
   .title

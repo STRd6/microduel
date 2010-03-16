@@ -11,12 +11,12 @@
   - game_card.abilities.each do |ability|
     - if attack = ability.attack
       .ability.attack
-        .cost
-          - ability.time_cost.times do
-            .icon.time.subtract
-        \=>
-        .damage{:title => attack.damage}
-          = attack.derived_damage(game_card.star_counters)
+        .channel
+          .cost
+            - ability.time_cost.times do
+              .icon.time.subtract
+          .damage{:title => attack.damage}
+            = attack.derived_damage(game_card.star_counters)
         .types
           = attack.types.join " "
         
